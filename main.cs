@@ -103,7 +103,7 @@ namespace ShowOffWebAPI
                     {
                         // 处理根路径请求
                         response.StatusCode = 200;
-                        responseString = string.Format(/*lang=json*/ "{{\"success\":0,\"message\":\"\",\"data\":{\"plugName\":\"{0}\",\"plugVer\":\"{1}\",\"gameName\":\"{2}\",\"gameVer\":\"{3}\",\"curContent\":\"{4}\"}}}", pluName, pluVer.ToString(), gameName, gameVer, 推送功能.单例.上次输入);
+                        responseString = string.Format(/*lang=json*/ "{{\"success\":0,\"message\":\"\",\"data\":{{\"plugName\":\"{0}\",\"plugVer\":\"{1}\",\"gameName\":\"{2}\",\"gameVer\":\"{3}\",\"curContent\":\"{4}\"}}}}", pluName, pluVer.ToString(), gameName, gameVer, 推送功能.单例.上次输入);
                         // 显示插件及游戏信息                
                     }
                     else if (path == "/push") // 路径push(推送)
