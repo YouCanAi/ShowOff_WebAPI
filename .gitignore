@@ -1,0 +1,4 @@
+**/Libs/*.dll
+obj/
+.vs/
+Properties/
