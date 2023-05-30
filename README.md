@@ -2,7 +2,7 @@
 一个为[《闲置显摆器》](https://store.steampowered.com/app/2392060)添加WebAPI的 [BeplnEx](https://github.com/BepInEx/BepInEx) 插件
 
 
-![demo](https://raw.githubusercontent.com/VictorModi/ShowOff_WebAPI/main/demo.png)
+![demo](https://raw.githubusercontent.com/VictorModi/ShowOff_WebAPI/master/demo.png)
 ## 如何安装
  1. 在 [Steam](https://store.steampowered.com/) 购买下载[《闲置显摆器》](https://store.steampowered.com/app/2392060)。
  2. 在 [BeplnEx](https://github.com/BepInEx/BepInEx) 的 [releases页面](https://github.com/BepInEx/BepInEx/releases) 下载 [最新稳定版](https://github.com/BepInEx/BepInEx/releases/latest) 本的 [BeplnEx](https://github.com/BepInEx/BepInEx) 压缩包。
