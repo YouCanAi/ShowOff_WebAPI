@@ -1,11 +1,11 @@
 # ShowOff_WebAPI
-一个为[《闲置显摆器》](https://store.steampowered.com/app/2392060)添加WebAPI的 [BeplnEx](https://github.com/BepInEx/BepInEx) 插件
+一个为[《闲置显摆器》](https://store.steampowered.com/app/2392060)添加WebAPI的 [BepInEx](https://github.com/BepInEx/BepInEx) 插件
 
 
 ![demo](https://raw.githubusercontent.com/VictorModi/ShowOff_WebAPI/master/demo.png)
 ## 如何安装
  1. 在 [Steam](https://store.steampowered.com/) 购买下载[《闲置显摆器》](https://store.steampowered.com/app/2392060)。
- 2. 在 [BeplnEx](https://github.com/BepInEx/BepInEx) 的 [releases页面](https://github.com/BepInEx/BepInEx/releases) 下载 [最新稳定版本](https://github.com/BepInEx/BepInEx/releases/latest) 的 [BeplnEx](https://github.com/BepInEx/BepInEx) 压缩包。
+ 2. 在 [BepInEx](https://github.com/BepInEx/BepInEx) 的 [releases页面](https://github.com/BepInEx/BepInEx/releases) 下载 [最新稳定版本](https://github.com/BepInEx/BepInEx/releases/latest) 的 [BepInEx](https://github.com/BepInEx/BepInEx) 压缩包。
  3. 在 [本项目的releases页面](https://github.com/VictorModi/releases)下载 `ShowOff.WebAPI.dll`。
  4. 将 [BeplnEx](https://github.com/BepInEx/BepInEx) 的压缩包解压至 [《闲置显摆器》](https://store.steampowered.com/app/2392060) 的游戏根目录，然后在 `BepInEx` 文件夹里创建 `plugins` 文件夹(如果已经有该文件夹则不用管这条)。
  5. 将 `ShowOff.WebAPI.dll` 放入 `plugins` 文件夹。
