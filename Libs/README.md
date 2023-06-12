@@ -1,5 +1,6 @@
 # Put Your Game Library On Here
- - Assembly-CSharp.dll
- - BepInEx.dll
- - UnityEngine.CoreModule.dll
- - UnityEngine.dll
+ - `Assembly-CSharp.dll`
+ - `BepInEx.dll`
+ - `UnityEngine.dll`
+ - `UnityEngine.CoreModule.dll`
+ - `UnityEngine.JSONSerializeModule.dll`

@@ -1,4 +1,5 @@
 **/Libs/*.dll
 obj/
 .vs/
+bin/
 Properties/
