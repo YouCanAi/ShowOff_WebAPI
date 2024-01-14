@@ -10,10 +10,7 @@ goto check
 :check
 set BepInExFolder=%GameFolder:~0,-1%\BepInEx\core"
 set LibraryFolder=%GameFolder:~0,-1%\Idle ShowOff_Data\Managed"
-if not exist %GameFolder% (goto folder_error)
-    if not exist %BepInExFolder% (goto folder_error)
-        if not exist %LibraryFolder% (goto folder_error)
-            goto copy
+goto copy
 
 :folder_error
 echo Wrong folder detected, check input

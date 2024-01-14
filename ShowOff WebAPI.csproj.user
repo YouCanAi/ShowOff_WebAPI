@@ -2,7 +2,7 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <StartAction>Program</StartAction>
-    <StartProgram>C:\Program Files\Steam\steamapps\common\闲置显摆器\Idle ShowOff.exe</StartProgram>
+    <StartProgram>C:\Program Files %28x86%29\Steam\steamapps\common\闲置显摆器\Idle ShowOff.exe</StartProgram>
   </PropertyGroup>
   <PropertyGroup>
     <ReferencePath>Libs\</ReferencePath>
