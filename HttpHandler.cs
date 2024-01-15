@@ -1,5 +1,4 @@
 ﻿using System.Collections.Specialized;
-using BepInEx;
 using UnityEngine;
 
 namespace HttpHandler
@@ -9,7 +8,7 @@ namespace HttpHandler
 
         public abstract string requestPath { get; }
         public abstract APIType type { get; }
-        public abstract JsonResult Get(NameValueCollection parameters, BepInPlugin bepInPlugin);
+        public abstract JsonResult Get(NameValueCollection parameters, ShowOffWebAPI showOffWebApi);
 
     }
 

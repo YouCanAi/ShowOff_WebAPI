@@ -1,6 +1,5 @@
 ﻿using HttpHandler;
 using System.Collections.Specialized;
-using BepInEx;
 using System;
 
 namespace Controllers
@@ -11,7 +10,7 @@ namespace Controllers
 
         public override APIType type => APIType.Private;
 
-        public override JsonResult Get(NameValueCollection parameters, BepInPlugin bepInPlugin)
+        public override JsonResult Get(NameValueCollection parameters, ShowOffWebAPI showOffWebApi)
         {
             if (string.IsNullOrEmpty(parameters["value"]))
             {
@@ -33,17 +32,21 @@ namespace Controllers
                 xpWay = XpRequestWay.Add;
             }
 
-            SetXP(xpValue, xpType, xpWay);
+            if (!bool.TryParse(parameters["toInput"], out bool refresh))
+            {
+                refresh = true;
+            }
 
+            SetXP(xpValue, xpType, xpWay, refresh);
             return JsonResult.OK(string.Format("{0} {1} completed.", xpType.ToString(), xpWay == XpRequestWay.Add ? "increase" : "setting"));
         }
 
-        private void SetXP(int value, XpRequestType type = XpRequestType.Exp, XpRequestWay way = XpRequestWay.Add)
+        private void SetXP(int value, XpRequestType type = XpRequestType.Exp, XpRequestWay way = XpRequestWay.Add, bool refresh = true)
         {
             switch (type)
             {
                 case XpRequestType.Exp:
-                    SetXPExp(way, value);
+                    SetXPExp(way, value, refresh);
                     break;
                 case XpRequestType.Level:
                     SetXPLevel(way, value);
@@ -51,7 +54,7 @@ namespace Controllers
             }
         }
 
-        private void SetXPExp(XpRequestWay way, int value)
+        private void SetXPExp(XpRequestWay way, int value, bool refresh = true)
         {
             switch (way)
             {
@@ -62,9 +65,14 @@ namespace Controllers
                     挂机功能.单例.经验 = value;
                     break;
             }
+
+            if (refresh)
+            {
+                挂机功能.单例.刷新();
+            }
         }
 
-        private void SetXPLevel(XpRequestWay way, int value)
+        private void SetXPLevel(XpRequestWay way, int value, bool refresh = true)
         {
             switch (way)
             {
@@ -75,18 +83,22 @@ namespace Controllers
                     挂机功能.单例.等级 = value;
                     break;
             }
+
+            if (refresh)
+            {
+                挂机功能.单例.刷新();
+            }
         }
-    }
+        enum XpRequestType
+        {
+            Level,
+            Exp
+        }
 
-    enum XpRequestType
-    {
-        Level,
-        Exp
-    }
-
-    enum XpRequestWay
-    {
-        Add,
-        Set
+        enum XpRequestWay
+        {
+            Add,
+            Set
+        }
     }
 }

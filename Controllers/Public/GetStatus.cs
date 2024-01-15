@@ -11,9 +11,9 @@ namespace Controllers
 
         public override APIType type => APIType.Public;
 
-        public override JsonResult Get(NameValueCollection parameters, BepInPlugin bepInPlugin)
+        public override JsonResult Get(NameValueCollection parameters, ShowOffWebAPI showOffWebApi)
         {
-            return JsonResult.OK("", StatusData.GetStatusData(bepInPlugin));
+            return JsonResult.OK("", StatusData.GetStatusData(showOffWebApi.Info.Metadata));
         }
 
         private class StatusData

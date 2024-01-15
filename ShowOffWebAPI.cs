@@ -8,9 +8,10 @@ using Controllers;
 using HttpHandler;
 using System.Net.Sockets;
 using System.Collections.Specialized;
+using BepInEx.Logging;
 
 //插件描述特性 分别为 插件ID 插件名字 插件版本(必须为数字)
-[BepInPlugin("vm.mba.plugin.showoffwebapi", "ShowOff_WebAPI", "1.2")]
+[BepInPlugin("vm.mba.plugin.showoffwebapi", "ShowOff WebAPI", "1.2")]
 public class ShowOffWebAPI : BaseUnityPlugin //继承BaseUnityPlugin
 {
     // 创建配置文件
@@ -40,7 +41,7 @@ public class ShowOffWebAPI : BaseUnityPlugin //继承BaseUnityPlugin
         {
             listener.Start(); // 服务器！启动！
         }
-        catch (SocketException exception)
+        catch (SocketException)
         {
             Logger.LogError("Port already in use. Please choose another port for the plugin.");
             Stop();
@@ -70,14 +71,15 @@ public class ShowOffWebAPI : BaseUnityPlugin //继承BaseUnityPlugin
     {
         JsonResult result = null;
         HttpListenerRequest request = context.Request;
-        Logger.LogInfo(string.Format("Received request from: {0}", request.RemoteEndPoint.Address));
+        Logger.LogInfo(string.Format("Received request from: {0}:{1}", request.RemoteEndPoint.Address, request.RemoteEndPoint.Port));
         HttpListenerResponse response = context.Response;
         context.Response.Headers["Server"] = string.Format("{0}/{1}", Info.Metadata.Name, Info.Metadata.Version);
         context.Response.Headers.Add("Access-Control-Allow-Origin", "*"); // 允许Javascript跨域访问
-        context.Response.Headers.Add("ContentType", "application/json");
-        response.ContentEncoding = Encoding.UTF8; // 防止浏览器认为页面为GBK
+        response.ContentEncoding = Encoding.UTF8;
+        response.ContentType = "application/json";
         string rawURL = context.Request.RawUrl;
         string path = rawURL.Split('?')[0];
+        Logger.LogInfo(string.Format("Request Path: {0}", path));
 
         if (rawURL == "/favicon.ico")
         {
@@ -89,57 +91,58 @@ public class ShowOffWebAPI : BaseUnityPlugin //继承BaseUnityPlugin
         Controller[] controllers = {
                 new GetStatus(),
                 new SetContent(),
-                new SetLevel()
+                new SetLevel(),
+                new SetBackground()
             };
 
 
-        foreach (var controller in controllers) // 公开接口的处理
+        foreach (var controller in controllers) // 控制器的处理
         {
             if (controller.requestPath == path)
             {
-                switch (controller.type)
-                {
-                    case APIType.Public:
-                        result = handlePublicRequest(controller, request.QueryString);
-                        break;
-                    default: // 默认类型为私有，十分霸道
-                        result = handlePrivateRequest(controller, request.QueryString);
-                        break;
-                }
+                result = handleRequest(controller, request.QueryString);
+                break;
             }
         }
 
         // Logger.LogInfo(responseString);
-        string responseString = result == null ? JsonResult.NotFound("Not Found").ToJson() : result.ToJson();  // 结束返回文本
+        result = result ?? JsonResult.NotFound("Not Found"); // 如果未找到匹配的 Controller 则返回内容是 404 Not Found
+        string responseString = result.ToJson();  // 结束返回文本
+        response.StatusCode = result.status_code;
+        Logger.LogInfo(string.Format("Response: {0} {1}",response.StatusCode, responseString));
         responseString += "\r\n";
         byte[] buffer = Encoding.UTF8.GetBytes(responseString);
-        response.ContentType = "text/html";
         response.ContentLength64 = buffer.Length;
         Stream output = response.OutputStream;
         output.Write(buffer, 0, buffer.Length);
         output.Close();
     }
 
-    BepInPlugin GetMetaData()
+    JsonResult handleRequest(Controller controller, NameValueCollection parameters)
     {
-        return Info.Metadata;
+        switch (controller.type)
+        { // 区分接口类型 私有或公开
+            case APIType.Public:
+                // 公开接口的处理
+                return controller.Get(parameters, this);
+            case APIType.Private:
+                if (string.IsNullOrEmpty(accessToken.Value) || (parameters["access_token"] == accessToken.Value)) // AccessToken 鉴权 如果accessToken未设置则直接认定鉴权成功
+                {
+                    // 私有接口的处理逻辑
+                    return controller.Get(parameters, this);
+                }
+                else
+                {
+                    // AccessToken 鉴权失败
+                    return JsonResult.Failed("invalid_token");
+                }
+        }
+
+        return null;
     }
 
-    JsonResult handlePublicRequest(Controller controller, NameValueCollection parameters)
+    public void Log(LogLevel level, string message) // 用于给 Controller 输出日志
     {
-        return controller.Get(parameters, GetMetaData());
-    }
-
-    JsonResult handlePrivateRequest(Controller controller, NameValueCollection parameters)
-    {
-        if (string.IsNullOrEmpty(accessToken.Value) || (parameters["AccessToken"] == accessToken.Value))
-        {
-            // 私有接口的处理逻辑
-            return controller.Get(parameters, GetMetaData());
-        }
-        else
-        {
-            return JsonResult.Failed("invalid_token");
-        }
+        Logger.Log(level, message);
     }
 }

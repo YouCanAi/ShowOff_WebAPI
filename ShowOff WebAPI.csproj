@@ -59,8 +59,12 @@
       <HintPath>Libs\UnityEngine.JSONSerializeModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\闲置显摆器\Idle ShowOff_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Private\SetBackground.cs" />
     <Compile Include="Controllers\Private\SetContent.cs" />
     <Compile Include="Controllers\Private\SetLevel.cs" />
     <Compile Include="Controllers\Public\GetStatus.cs" />
